@@ -521,6 +521,7 @@ CConfigManager::CConfigManager() {
     registerConfigVar("misc:lockdead_screen_delay", Hyprlang::INT{1000});
     registerConfigVar("misc:enable_anr_dialog", Hyprlang::INT{1});
     registerConfigVar("misc:anr_missed_pings", Hyprlang::INT{1});
+    registerConfigVar("misc:screencopy_force_8b", Hyprlang::INT{1});
 
     registerConfigVar("group:insert_after_current", Hyprlang::INT{1});
     registerConfigVar("group:focus_removed_window", Hyprlang::INT{1});
@@ -3246,6 +3247,8 @@ std::optional<std::string> CConfigManager::handleGesture(const std::string& comm
         result = g_pTrackpadGestures->addGesture(makeUnique<CFloatTrackpadGesture>(std::string{data[startDataIdx + 1]}), fingerCount, direction, modMask, deltaScale);
     else if (data[startDataIdx] == "fullscreen")
         result = g_pTrackpadGestures->addGesture(makeUnique<CFullscreenTrackpadGesture>(std::string{data[startDataIdx + 1]}), fingerCount, direction, modMask, deltaScale);
+    else if (data[startDataIdx] == "unset")
+        result = g_pTrackpadGestures->removeGesture(fingerCount, direction, modMask, deltaScale);
     else
         return std::format("Invalid gesture: {}", data[startDataIdx]);
 
